@@ -1,0 +1,205 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% block content %}
+<head><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<style>
+.box{
+  max-width: 400px;
+  width: 100%;
+    display: contents;
+    /* display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh; */
+}
+.box .search-box{
+  position: relative;
+  height: 50px;
+  /* max-width: 50px; */
+  margin: auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  max-width: 390px;
+
+}
+.search-box input{
+ position: absolute;
+ height: 100%;
+ width: 100%;
+ border-radius: 25px;
+ /*background: #fff;*/
+ background-color: transparent;
+ outline: none;
+ border: none;
+ padding-left: 20px;
+ font-size: 18px;
+ /* margin-right:10px; */
+ box-shadow: -1px -5px 10px #edeff1,
+ 4px 5px 10px #cacfd8;
+ transition: .5s;
+}
+.search-box input:focus{
+	box-shadow: -10px -10px 15px #edeff1,
+ 				10px 10px 15px #cacfd8;	
+}
+.search-box .icon{
+  position: absolute;
+  right: -2px;
+  top: 0;
+  /* width: 50px; */
+  /* background: #FFF; */
+  height: 100%;
+  text-align: center;
+  line-height: 50px;
+  /* color: #FF676D; */
+  font-size: 20px;
+  /* border-radius: 25px; */
+  /* margin-right: 10px; */
+  
+  background: #FF676D;
+  color: #FFF;
+  width: 110px;
+  border-radius: 0 25px 25px 0;
+}
+/* .fa-search, .fa-microphone{
+	padding-right: 10px;
+}
+button{
+	background: transparent;
+	border: none;
+	padding:0;
+	margin:0;
+	font-size: 18px;
+	color: white;
+	transition: .5s;
+}
+button:focus{
+	border:none;
+	outline: none;
+}
+button:hover{
+	color:#cecece;
+} */
+/* .search-box{
+  position: relative;
+  height: 40px;
+  
+  margin: auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  max-width: 390px;
+
+} */
+button{
+	background: transparent;
+	border: none;
+	padding:2px 4.8%;
+	margin:0;
+	font-size: 18px;
+	color: rgb(0, 0, 0);
+	transition: .5s;
+}
+button:focus{
+	border:none;
+	outline: none;
+}
+button:hover{
+    color:#bc32ef;
+	/* color:#cecece; */
+}
+body{
+    background: linear-gradient(
+-45deg
+, #ee775285, #e73c7e82, #23a6d57a, #23d5ab80);
+	/* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+	background-size: 400% 400%;
+	animation: gradient 20s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+    /* background: url("../images/bg.png") repeat; */
+.main{
+    margin-top:5%;
+}
+</style>
+<!-- <h1>Flask Chatbot</h1> -->
+    <div class="main">
+        <div id="chatbox" class=".chat_screen">
+            <p class="botText"><span>{{ wish }}! I'm Chatbot.</span></p>
+        </div>
+        
+          <div class="box">
+            <div id="userInput">
+                <input id="textInput" type="text" name="msg" placeholder="Message" autofocus>
+                <label for="textInput" id="icon">
+
+                <button id="buttonInput" type="submit" value="Send"><i class="fas fa-paper-plane"></i></button>
+                <button type="button" id="micBtn"><i class="fas fa-microphone"></i></button>
+                <button type="button" id="soundButton"><i class="fas fa-volume-up"></i></button>
+            </label>
+            </div>
+            </div>
+        <script>
+            function getBotResponse() {
+                let rawText = $("#textInput").val();
+                let userHtml = '<p class="userText"><span>' + rawText + '</span></p>';
+                $("#textInput").val("");
+                $("#chatbox").append(userHtml);
+                document.getElementById('chatbox').scrollIntoView({block: 'end', behavior: 'smooth'});
+                document.getElementById('chatbox').scrollTop += 100;
+                $.get("/get", {msg: rawText }).done(function(data) {
+                    if (data.includes('https://www.youtube.com/')) { 
+                        // console.log(data)
+                        var temp = data.split('#');
+                        var link = temp[2];
+                        let botHtml = '<p class="botText"><span>' + temp[0] + '<br>' + temp[1] + '<a href="'+link+'" target="_blank">' + temp[2] + '</a>' + '</span></p>';
+                        $("#chatbox").append(botHtml);
+                        // $("#chatbox").stop().animate({ scrollTop: $("#chatbox")[0].scrollHeight}, 1000);
+                        textToAudio(temp[0]);
+                    }
+                    else{
+                        let botHtml = '<p class="botText"><span>' + data + '</span></p>';
+                        $("#chatbox").append(botHtml); 
+                        // $("#chatbox").stop().animate({ scrollTop: $("#chatbox")[0].scrollHeight}, 1000);
+                        textToAudio(data);
+                    }
+                    document.getElementById('chatbox').scrollIntoView({block: 'end', behavior: 'smooth'});
+                    document.getElementById('chatbox').scrollTop += 100;
+                    
+                });
+            }
+            $("#textInput").keypress(function(e) {
+                if (e.which === 13) {
+                    getBotResponse();
+                }
+            });
+            $("#buttonInput").click(function () {
+                getBotResponse();
+            });
+            $("#clearScrn").click(function (){
+                document.getElementById("chatbox").innerHTML = "";
+            });
+            
+            // function clear(){
+            //     console.log("clearing");
+            //     // document.getElementById("chatbox").innerHTML = "";
+            //     var div = document.getElementById('chatbox');
+            //     while(div.firstChild){
+            //         div.removeChild(div.firstChild);
+            //     }
+            // };
+        </script>
+    </div>
+<!-- {{ name }} -->
+{% endblock %}

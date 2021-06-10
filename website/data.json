@@ -1,0 +1,44 @@
+{
+    "resp01": [
+        "I'm good thanks.",
+        "I'm doing well.",
+        "I'm alive!"
+    ],
+    "resp02": [
+        "Yes I am a robot, but I\u2019m a good one. Let me prove it. How can I help you? ",
+        "Yes I am a robot who is currently in learning state."
+    ],
+    "resp03": [
+        "My name is Shembdya.",
+        "Myself Shankarpalya."
+    ],
+    "resp04": [
+        "Your Welcome",
+        "My Pleasure",
+        "You're very welcome, boss! It was my pleasure.",
+        "I'm glad I could help.",
+        "Don't mention it."
+    ],
+    "resp05": [
+        "I'll try my best to find a relevant answer to your question(query).",
+        "I am always there to find best answers to your questions."
+    ],
+    "resp06": [
+        "How does a rabbi make coffee? Hebrews it!",
+        "Rest in peace boiling water. You will be mist!",
+        "Want to hear a construction joke? Oh never mind, I'm still working on that one.",
+        "Talk is cheap? Have you ever talked to a lawyer?",
+        "Two artists had an art contest. It ended in a draw!",
+        "You know what I saw today? Everything I looked at.",
+        "Here, I bought you a calendar. Your days are numbered now."
+    ],
+    "resp07": [
+        "I was created on 17th April 2021. Calculate it yourself.",
+        "Never ask robot his age.",
+        "I am younger than u my friend."
+    ],
+    "resp08": [
+        "Parmesh with his team members Aish, Nih, Deep.",
+        "Four students from SE-IT-B created me."
+    ]
+}
